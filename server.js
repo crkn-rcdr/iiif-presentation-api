@@ -50,7 +50,7 @@ fastify.register(AutoLoad, {
 })
 
 // Run the server!
-fastify.listen({ port: config.port }, function (err, address) {
+fastify.listen({ port: config.port, host: '0.0.0.0' }, function (err, address) {
   if (err) {
     fastify.log.error(err)
     process.exit(1)
