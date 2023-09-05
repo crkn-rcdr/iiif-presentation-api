@@ -17,6 +17,7 @@ const config = {
   secret: env.SECRET || 'youshouldspecifyalongsecret'
 };
 
+
 // postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
 const connectionString = `postgres://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`
 

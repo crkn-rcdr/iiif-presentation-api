@@ -13,8 +13,22 @@ services:
     volumes: 
       - ./db:/var/lib/postgresql/data
     networks:
-      blapp:
-        ipv4_address: 10.5.0.6
+      iiifprezi:
+        ipv4_address: 10.6.0.6
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - postgresqlserver
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      iiifprezi:
+        ipv4_address: 10.6.0.4
   apiserver:
     build: '.'
     ports:
@@ -30,12 +44,12 @@ services:
       DB_PASSWORD: postgres
       DB_NAME: postgres
     networks:
-      blapp:
-        ipv4_address: 10.5.0.5
+      iiifprezi:
+        ipv4_address: 10.6.0.5
 networks:
-  blapp:
+  iiifprezi:
     driver: bridge
     ipam:
      config:
-       - subnet: 10.5.0.0/16
-         gateway: 10.5.0.1
+       - subnet: 10.6.0.0/16
+         gateway: 10.6.0.1
