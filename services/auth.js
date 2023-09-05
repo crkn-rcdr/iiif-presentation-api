@@ -5,15 +5,9 @@ const schemas = require('../schemas/auth')
 module.exports = async function (fastify, opts) {
   fastify.post('/token', { schema: schemas.token }, async function (request, reply) {
     const { username, password } = request.body
-
-    const user = await this.mongo.db
-      .collection('users')
-      .findOne({ username, password })
-
     if (
-      user == null ||
-      user.username !== username ||
-      user.password !== password
+      process.env.API_USERNAME !== username ||
+      process.env.API_PASSWORD !== password
     ) {
       reply.status(401).send({ message: 'Invalid username or password' })
     } else {

@@ -3,6 +3,13 @@
 //const schemas = require('../schemas/iiif')
 
 module.exports = async function (fastify, opts) {
+  fastify.addHook('onRequest', async (request, reply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      reply.send(err)
+    }
+  })
 
   fastify.setNotFoundHandler(function (request, reply) {
     reply
@@ -80,4 +87,4 @@ module.exports = async function (fastify, opts) {
   )*/
 }
 
-module.exports.autoPrefix = '/iiif'
+module.exports.autoPrefix = '/manifest'

@@ -43,6 +43,8 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: postgres
+      API_USERNAME: admin
+      API_PASSWORD: admin
     networks:
       iiifprezi:
         ipv4_address: 10.6.0.5
