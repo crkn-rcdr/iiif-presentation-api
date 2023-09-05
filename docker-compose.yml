@@ -1,0 +1,41 @@
+# docker-compose.yaml
+version: '3'
+
+services:
+  postgresqlserver:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./db:/var/lib/postgresql/data
+    networks:
+      blapp:
+        ipv4_address: 10.5.0.6
+  apiserver:
+    build: '.'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgresqlserver
+    environment:
+      NODE_ENV: production
+      FASTIFY_PORT: 8080
+      DB_HOST: postgresqlserver
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
+    networks:
+      blapp:
+        ipv4_address: 10.5.0.5
+networks:
+  blapp:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

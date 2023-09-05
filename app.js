@@ -1,37 +1,58 @@
 'use strict'
 
 const path = require('path')
-const AutoLoad = require('fastify-autoload')
+const AutoLoad = require('@fastify/autoload')
 
-module.exports = function (fastify, opts, next) {
-  fastify
-    .register(require('fastify-mongodb'), {
-      url: 'mongodb://localhost/todo',
-      ...opts.mongo
-    })
-    .register(require('fastify-cors'))
-    .register(require('fastify-helmet'))
-    .register(require('fastify-jwt'), {
-      secret: opts.auth ? opts.auth.secret : process.env.SECRET || 'youshouldspecifyalongsecret'
-    })
+const env = process.env;
 
-  // Do not touch the following lines
+const config = {
+  db: { /* do not put password or any sensitive info here, done only for demo */
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    user: env.DB_USER,
+    password: env.DB_PASSWORD,
+    database: env.DB_NAME,
+  },
+  port: env.FASTIFY_PORT,
+  secret: env.SECRET || 'youshouldspecifyalongsecret'
+};
 
-  // This loads all plugins defined in plugins
-  // those should be support plugins that are reused
-  // through your application
-  fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'plugins'),
-    options: Object.assign({}, opts)
+// postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
+const connectionString = `postgres://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`
+
+// CommonJs
+const fastify = require('fastify')({
+  logger: true
+})
+
+fastify.register(require('@fastify/postgres'), {
+  connectionString
+})
+  .register(require('@fastify/cors'))
+  .register(require('@fastify/helmet'))
+  .register(require('@fastify/jwt'), {
+    secret: config.secret
   })
 
-  // This loads all plugins defined in services
-  // define your routes in one of these
-  fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'services'),
-    options: Object.assign({ prefix: '/api' }, opts)
-  })
 
-  // Make sure to call next when done
-  next()
-}
+// This loads all plugins defined in plugins
+// those should be support plugins that are reused
+// through your application
+fastify.register(AutoLoad, {
+  dir: path.join(__dirname, 'plugins')
+})
+
+// This loads all plugins defined in services
+// define your routes in one of these
+fastify.register(AutoLoad, {
+  dir: path.join(__dirname, 'services')
+})
+
+// Run the server!
+fastify.listen({ port: config.port }, function (err, address) {
+  if (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+  fastify.log.info(`Server is now listening on ${address}`)
+})
