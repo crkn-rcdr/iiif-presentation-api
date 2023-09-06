@@ -10,22 +10,23 @@ Optional: populate the database with CRKN manifests using the instructions found
 ## Production 
 TODO
 
-# PostgreSQL
-Running at: postgresql://postgres:postgres@postgresqlserver:5432
+# Technology
+## PostgreSQL
+Development url: postgresql://postgres:postgres@postgresqlserver:5432
 
 PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
 
 [Documentation](https://www.postgresql.org/docs/current/)
 
-# pgAdmin
-Running at: http://localhost:5050/login?next=%2F
+## pgAdmin
+Development url: http://localhost:5050/login?next=%2F
 
 pgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL.
 
 [Documentation](https://www.pgadmin.org/docs/pgadmin4/7.6/index.html)
 
-# Fastify API
-Running at: http://localhost:8080/
+## Fastify API
+Development url: http://localhost:8080/
 
 Fast and low overhead web framework, for Node.js
 
