@@ -18,38 +18,8 @@ module.exports = async function (fastify, opts) {
       .send({ message: 'Requested todo item does not exist' })
   })
 
-  /*fastify.get(
-    '/',
-    { schema: schemas.findAll },
-    async function (request, reply) {
-      const limit = parseInt(request.query.limit) || 0
-      const offset = parseInt(request.query.offset) || 0
-      return this.mongo.db
-        .collection('todo')
-        .find()
-        .sort({ timestamp: -1 })
-        .skip(offset)
-        .limit(limit)
-        .toArray()
-    }
-  )
 
-  fastify.get(
-    '/:name',
-    { schema: schemas.findOne },
-    async function (request, reply) {
-      const item = await this.mongo.db
-        .collection('todo')
-        .findOne({ name: request.params.name })
-
-      if (item == null) {
-        return reply.callNotFound()
-      }
-
-      return item
-    }
-  )
-
+  /*
   fastify.post(
     '/',
     { schema: schemas.insertOne },
