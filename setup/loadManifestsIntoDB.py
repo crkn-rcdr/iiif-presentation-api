@@ -26,7 +26,7 @@ print("Start!")
 p = pandas.read_json('canvascleaned.json', orient="index")
 
 
-iiif_url = "http://10.5.0.5:5000/iiif/"
+iiif_url = "http://10.6.0.5:8080/iiif/"
 image_server_url = 'https://image-tor.canadiana.ca/iiif/2/'
 
 def iiif_annotation(manifest, image):
