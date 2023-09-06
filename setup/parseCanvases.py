@@ -2,7 +2,7 @@ import json
 
 # Pre process cause it's too big
 canvasdict = {}
-with open('canvases.json', 'rb') as c:
+with open('canvasdb.json', 'rb') as c:
   for canvas in ijson.items(c, 'rows.item'):
     canvasdict[canvas["id"]] = canvas["key"]
 

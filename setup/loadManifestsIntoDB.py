@@ -7,20 +7,6 @@ from psycopg2.extensions import register_adapter
 
 register_adapter(dict, Json)
 
-# Before Running:
-'''
-# Curl download canvases to json
-# curl -X GET http://<YOURUSER>:<YOURPASSWORD>@<url>:5984/canvas/_all_docs?include_docs=true > ./canvases.json
-
-python3 parseCanvases.py
-
-# Curl download access to json
-# curl -X GET http://<YOURUSER>:<YOURPASSWORD>@<url>:5984/access/_all_docs?include_docs=true > ./accessdb.json
-
-docker-compose up
-python3 loadManifestsIntoDB.py
-'''
-
 print("Start!")
 
 p = pandas.read_json('canvascleaned.json', orient="index")
