@@ -3,6 +3,7 @@
 docker-compose build
 docker compose up
 ```
+Optional: populate the database with CRKN manifests using the instructions found in the /setup folder. (Credentials required.)
 
 # PostgreSQL
 Running at: postgresql://postgres:postgres@postgresqlserver:5432
