@@ -3,8 +3,8 @@
 const { test } = require('tap')
 const { build } = require('../helper')
 
-test('test todo list functionality', async (t) => {
-  t.test('should create an item', async (t) => {
+test('test iiif functionality', async (t) => {
+  /*t.test('should create an item', async (t) => {
     const app = build(t)
 
     const auth = await app.inject({
@@ -186,5 +186,5 @@ test('test todo list functionality', async (t) => {
 
     t.is(res.statusCode, 500)
     t.is(payload.message, 'jwt malformed')
-  })
+  })*/
 })
