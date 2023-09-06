@@ -44,7 +44,7 @@ module.exports = async function (fastify, opts) {
       const client = await fastify.pg.connect()
       try {
         const { rows } = await client.query(
-          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://10.5.0.5:5000/iiif/' + request.params.manifestId + '/manifest'],
+          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://iiif-presentation-api.canadiana.ca/iiif/' + request.params.manifestId + '/manifest'],
         )
         // Note: avoid doing expensive computation here, this will block releasing the client
         return rows.length ? rows[0]['manifest_json'] : { error : "Not found." }
@@ -64,7 +64,7 @@ module.exports = async function (fastify, opts) {
       let manifest;
       try {
         const { rows } = await client.query(
-          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://10.5.0.5:5000/iiif/' + request.params.manifestId + '/manifest'],
+          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://iiif-presentation-api.canadiana.ca/iiif/' + request.params.manifestId + '/manifest'],
         )
         // Note: avoid doing expensive computation here, this will block releasing the client
         if(rows.length) manifest = rows[0]['manifest_json']
@@ -75,7 +75,7 @@ module.exports = async function (fastify, opts) {
 
       let canvas = { 'error' : 'Not found' }
       for (let item of manifest['items']) {
-        if (item['id'] == 'http://10.5.0.5:5000/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix) {
+        if (item['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix) {
           canvas = item
           break
         }
@@ -93,7 +93,7 @@ module.exports = async function (fastify, opts) {
       let manifest;
       try {
         const { rows } = await client.query(
-          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://10.5.0.5:5000/iiif/' + request.params.manifestId + '/manifest'],
+          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://iiif-presentation-api.canadiana.ca/iiif/' + request.params.manifestId + '/manifest'],
         )
         // Note: avoid doing expensive computation here, this will block releasing the client
         if(rows.length) manifest = rows[0]['manifest_json']
@@ -104,9 +104,9 @@ module.exports = async function (fastify, opts) {
 
       let annotationpage = { 'error' : 'Not found.' }
       for (let item of manifest['items']) {
-        if (item['id'] == 'http://10.5.0.5:5000/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix){
+        if (item['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix){
           for (let canvasItem of item['items']){
-            if (canvasItem['id'] == 'http://10.5.0.5:5000/iiif/'+request.params.manifestId+'/annotationpage/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix+'/'+request.params.annotationPageName){
+            if (canvasItem['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/annotationpage/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix+'/'+request.params.annotationPageName){
               annotationpage = canvasItem
               break
             }
@@ -127,7 +127,7 @@ module.exports = async function (fastify, opts) {
       let manifest;
       try {
         const { rows } = await client.query(
-          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://10.5.0.5:5000/iiif/' + request.params.manifestId + '/manifest'],
+          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://iiif-presentation-api.canadiana.ca/iiif/' + request.params.manifestId + '/manifest'],
         )
         // Note: avoid doing expensive computation here, this will block releasing the client
         if(rows.length) manifest = rows[0]['manifest_json']
@@ -139,11 +139,11 @@ module.exports = async function (fastify, opts) {
       let annotation={ 'error' : 'Not found.' }
       if(manifest) {
         for (let item of manifest['items']) {
-          if (item['id'] == 'http://10.5.0.5:5000/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix) {
+          if (item['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix) {
             for (let canvasItem of item['items']){
-              if (canvasItem['id'] == 'http://10.5.0.5:5000/iiif/'+request.params.manifestId+'/annotationpage/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix+'/'+request.params.annotationPageName) {
+              if (canvasItem['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/annotationpage/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix+'/'+request.params.annotationPageName) {
                 for (let annotationpageItem of canvasItem['items']) {
-                  if (annotationpageItem['id'] == 'http://10.5.0.5:5000/iiif/'+request.params.manifestId+'/annotation/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix+'/'+request.params.annotationPageName+'/'+request.params.annotationId) {
+                  if (annotationpageItem['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/annotation/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix+'/'+request.params.annotationPageName+'/'+request.params.annotationId) {
                     annotation = annotationpageItem
                     break
                   }

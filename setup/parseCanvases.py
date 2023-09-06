@@ -1,4 +1,5 @@
 import json
+import ijson
 
 # Pre process cause it's too big
 canvasdict = {}
