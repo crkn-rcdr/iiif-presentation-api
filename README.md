@@ -2,10 +2,7 @@
 #pgadmin
 http://localhost:5050/login?next=%2F
 postgresql://postgres:postgres@postgresqlserver:5432
-CREATE INDEX idxurl ON manifests ((manifest_json->>'id'));
-SELECT * FROM manifests WHERE manifest_json->>'id' = 'http://10.5.0.5:5000/iiif/oocihm.lac_reel_c8128/manifest'; 
-Postgres Query complete 00:00:00.357
-Couchdb: way too long (timeout)
+
 
 #api
 docker-compose build

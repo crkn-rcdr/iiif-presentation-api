@@ -27,8 +27,6 @@ module.exports = async function (fastify, opts) {
     }
   )*/
 
-  //curl -X GET http://admin:YOURPASSWORD@10.5.0.6:5984/manifest/_design/iiif/_view/id?include_docs=true?key="http://10.5.0.5:5000/iiif/oocihm.8_06645_12/manifest"
-
   fastify.get(
     '/:id/manifest',
     //{ schema: schemas.findOne },
