@@ -2,6 +2,8 @@
 #pgadmin
 http://localhost:5050/login?next=%2F
 postgresql://postgres:postgres@postgresqlserver:5432
+CREATE INDEX idxurl ON manifests ((manifest_json->>'id'));
+
 
 #api
 docker-compose build
