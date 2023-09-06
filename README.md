@@ -11,6 +11,11 @@ Couchdb: way too long (timeout)
 docker-compose build
 http://localhost:8080/
 
+docker cp ./services/iiif.js fastify-iiif-presentation-api_apiserver_1:/app/services/iiif.js
+docker container restart fastify-iiif-presentation-api_apiserver_1
+docker logs fastify-iiif-presentation-api_apiserver_1 --follow
+
+
 TODO:
 GET /iiif/<collection_id>/collection
 GET /iiif/<manifest_id>/manifest

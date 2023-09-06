@@ -25,25 +25,29 @@ module.exports = async function (fastify, opts) {
         .limit(limit)
         .toArray()
     }
-  )
+  )*/
+
+  //curl -X GET http://admin:YOURPASSWORD@10.5.0.6:5984/manifest/_design/iiif/_view/id?include_docs=true?key="http://10.5.0.5:5000/iiif/oocihm.8_06645_12/manifest"
 
   fastify.get(
-    '/:name',
-    { schema: schemas.findOne },
+    '/:id/manifest',
+    //{ schema: schemas.findOne },
     async function (request, reply) {
-      const item = await this.mongo.db
-        .collection('todo')
-        .findOne({ name: request.params.name })
-
-      if (item == null) {
-        return reply.callNotFound()
+      const client = await fastify.pg.connect()
+      try {
+        const { rows } = await client.query(
+          "SELECT * FROM manifests WHERE manifest_json->>'id' =$1", ['http://10.5.0.5:5000/iiif/' + request.params.id + '/manifest'],
+        )
+        // Note: avoid doing expensive computation here, this will block releasing the client
+        return rows.length ? rows[0]['manifest_json'] : { error : "item not found." }
+      } finally {
+        // Release the client immediately after query resolves, or upon error
+        client.release()
       }
-
-      return item
     }
   )
 
-  fastify.post(
+  /*fastify.post(
     '/',
     { schema: schemas.insertOne },
     async function (request, reply) {
