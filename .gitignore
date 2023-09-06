@@ -66,3 +66,5 @@ examples/typescript-server.js
 test/types/index.js
 
 db
+
+setup/*.json
