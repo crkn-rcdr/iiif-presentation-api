@@ -18,43 +18,80 @@ module.exports = async function (fastify, opts) {
       .send({ message: 'Requested todo item does not exist' })
   })
 
+  // CREATE
+  fastify.put(
+    '',
+    //{ schema: schemas.updateOne },
+    async function (request, reply) {
+      const client = await fastify.pg.connect()
+      try {
+        // TODO: Create ID - need to determine if use url, database assigned, noid, or doi
+        const id = "todo"
+        const updated_at = Date.now()
+        const manifestJson = request.params.manifest
+        // will return a promise, fastify will send the result automatically
+        return fastify.pg.transact(async client => {
+          // will resolve to an manifest, or reject with an error
+          const manifest = await client.query('INSERT INTO manifests(id,updated_at,manifest_json) VALUES($1,$2,$3) RETURNING manifest_json', [id, updated_at, manifestJson])
+          // potentially do something with manifest
+          return manifest
+        })
 
-  /*
+      } finally {
+        // Release the client immediately after query resolves, or upon error
+        client.release()
+      }
+    }
+  )
+
+  // UPDATE
   fastify.post(
     '/',
-    { schema: schemas.insertOne },
+    //{ schema: schemas.insertOne },
     async function (request, reply) {
-      return this.mongo.db.collection('todo').insertOne(
-        Object.assign(request.body, {
-          timestamp: this.timestamp(),
-          done: false
+      const client = await fastify.pg.connect()
+      try {
+        const updated_at = Date.now()
+        const manifestJson = request.params.manifest
+        const id = manifestJson['id']
+        // will return a promise, fastify will send the result automatically
+        return fastify.pg.transact(async client => {
+          // will resolve to an manifest, or reject with an error
+          const manifest = await client.query("UPDATE manifests SET manifest_json=$1, updated_at=$2 WHERE manifest_json->>'id'=$2", [manifestJson, updated_at, id])
+          // potentially do something with manifest
+          return manifest
         })
-      )
+
+      } finally {
+        // Release the client immediately after query resolves, or upon error
+        client.release()
+      }
     }
   )
 
-  fastify.put(
-    '/:name',
-    { schema: schemas.updateOne },
-    async function (request, reply) {
-      return this.mongo.db
-        .collection('todo')
-        .findOneAndUpdate(
-          { name: request.params.name },
-          { $set: { done: request.body.done } }
-        )
-    }
-  )
 
+  // DELETE
   fastify.delete(
-    '/:name',
-    { schema: schemas.deleteOne },
+    '/',
+    //{ schema: schemas.deleteOne },
     async function (request, reply) {
-      return this.mongo.db
-        .collection('todo')
-        .deleteOne({ name: request.params.name })
+      const client = await fastify.pg.connect()
+      const id = request.params.id
+      try {
+        // will return a promise, fastify will send the result automatically
+        return fastify.pg.transact(async client => {
+          // will resolve to an id, or reject with an error
+          const manifest = await client.query("DELETE FROM manifests WHERE manifest_json->>'id'=$1", [id])
+          // potentially do something with id
+          return manifest
+        })
+
+      } finally {
+        // Release the client immediately after query resolves, or upon error
+        client.release()
+      }
     }
-  )*/
+  )
 }
 
 module.exports.autoPrefix = '/manifest'
