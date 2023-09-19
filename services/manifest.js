@@ -80,10 +80,8 @@ module.exports = async function (fastify, opts) {
       try {
         // will return a promise, fastify will send the result automatically
         return fastify.pg.transact(async client => {
-          // will resolve to an id, or reject with an error
-          const manifest = await client.query("DELETE FROM manifests WHERE manifest_json->>'id'=$1", [id])
-          // potentially do something with id
-          return manifest
+          // will resolve or reject with an error
+          return await client.query("DELETE FROM manifests WHERE manifest_json->>'id'=$1", [id]) 
         })
 
       } finally {
