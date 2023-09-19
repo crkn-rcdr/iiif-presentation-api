@@ -2,7 +2,6 @@
 
 //const schemas = require('../schemas/iiif')
 
-
 module.exports = async function (fastify, opts) {
 
   fastify.setNotFoundHandler(function (request, reply) {
@@ -20,22 +19,6 @@ module.exports = async function (fastify, opts) {
       return { error: "Endpoint not implemented" }
     }
   )
-
-  /*fastify.get(
-    '/manifest',
-    { schema: schemas.findAll },
-    async function (request, reply) {
-      const limit = parseInt(request.query.limit) || 0
-      const offset = parseInt(request.query.offset) || 0
-      return this.mongo.db
-        .collection('todo')
-        .find()
-        .sort({ timestamp: -1 })
-        .skip(offset)
-        .limit(limit)
-        .toArray()
-    }
-  )*/
 
   fastify.get(
     '/:manifestId/manifest',
@@ -60,7 +43,6 @@ module.exports = async function (fastify, opts) {
     //{ schema: schemas.findOne },
     async function (request, reply) {
       const client = await fastify.pg.connect()
-
       let manifest;
       try {
         const { rows } = await client.query(
@@ -72,7 +54,6 @@ module.exports = async function (fastify, opts) {
         // Release the client immediately after query resolves, or upon error
         client.release()
       }
-
       let canvas = { 'error' : 'Not found' }
       for (let item of manifest['items']) {
         if (item['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix) {
@@ -89,7 +70,6 @@ module.exports = async function (fastify, opts) {
     //{ schema: schemas.findOne },
     async function (request, reply) {
       const client = await fastify.pg.connect()
-
       let manifest;
       try {
         const { rows } = await client.query(
@@ -101,7 +81,6 @@ module.exports = async function (fastify, opts) {
         // Release the client immediately after query resolves, or upon error
         client.release()
       }
-
       let annotationpage = { 'error' : 'Not found.' }
       for (let item of manifest['items']) {
         if (item['id'] == 'http://iiif-presentation-api.canadiana.ca/iiif/'+request.params.manifestId+'/canvas/'+request.params.canvasIdPrefix+'/'+request.params.canvasIdSuffix){
@@ -123,7 +102,6 @@ module.exports = async function (fastify, opts) {
     //{ schema: schemas.findOne },
     async function (request, reply) {
       const client = await fastify.pg.connect()
-
       let manifest;
       try {
         const { rows } = await client.query(
@@ -135,7 +113,6 @@ module.exports = async function (fastify, opts) {
         // Release the client immediately after query resolves, or upon error
         client.release()
       }
-
       let annotation={ 'error' : 'Not found.' }
       if(manifest) {
         for (let item of manifest['items']) {

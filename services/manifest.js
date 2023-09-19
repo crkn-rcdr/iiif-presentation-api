@@ -1,6 +1,6 @@
 'use strict'
 
-//const schemas = require('../schemas/iiif')
+//const schemas = require('../schemas/manifest')
 
 module.exports = async function (fastify, opts) {
   fastify.addHook('onRequest', async (request, reply) => {
@@ -36,7 +36,6 @@ module.exports = async function (fastify, opts) {
           // potentially do something with manifest
           return manifest
         })
-
       } finally {
         // Release the client immediately after query resolves, or upon error
         client.release()
@@ -61,7 +60,6 @@ module.exports = async function (fastify, opts) {
           // potentially do something with manifest
           return manifest
         })
-
       } finally {
         // Release the client immediately after query resolves, or upon error
         client.release()
@@ -83,7 +81,6 @@ module.exports = async function (fastify, opts) {
           // will resolve or reject with an error
           return await client.query("DELETE FROM manifests WHERE manifest_json->>'id'=$1", [id]) 
         })
-
       } finally {
         // Release the client immediately after query resolves, or upon error
         client.release()
